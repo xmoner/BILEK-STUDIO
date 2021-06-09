@@ -1,4 +1,4 @@
-# Support BILEK STUDIO ![Alt text](SUPPORT/images/heart_support.png?raw=true "Heart Support")
+# Support ![](images/logo_small.png) BILEK STUDIO ![](images/heart_support.png)
 
 
 If you like the tools which **BILEK STUDIO** provides, then please help us to to grow up.
