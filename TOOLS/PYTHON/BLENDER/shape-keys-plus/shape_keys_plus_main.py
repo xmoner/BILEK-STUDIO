@@ -479,7 +479,7 @@ class ShapeKeysPlusHelp(bpy.types.Operator):
     bl_description = "Shape Keys Plus Help will take to you to the website."
     bl_options = {'REGISTER', 'UNDO'}
     def execute(self, context):
-        webbrowser.open('http://google.com')
+        webbrowser.open('https://github.com/xmoner/BILEK-STUDIO/tree/master/TOOLS/PYTHON/BLENDER/shape-keys-plus#readme')
         return {'FINISHED'}
 
 # Class about Bilek Studio
@@ -490,7 +490,7 @@ class BilekStudioAbout(bpy.types.Operator):
     bl_description = "BILEK STUDIO About will take to you to the website where you get more information about the studio."
     bl_options = {'REGISTER', 'UNDO'}
     def execute(self, context):
-        webbrowser.open('https://github.com/xmoner/BILEK-STUDIO')
+        webbrowser.open('https://github.com/xmoner/BILEK-STUDIO#readme')
         return {'FINISHED'}
 
 # Class for support BILEK STUDIO with website
@@ -501,7 +501,7 @@ class SupportBilekStudio(bpy.types.Operator):
     bl_description = "Please Support BILEK STUDIO if you like the tools.This button will take to you to the website where you get more information about the studio."
     bl_options = {'REGISTER', 'UNDO'}
     def execute(self, context):
-        webbrowser.open('https://github.com/xmoner/BILEK-STUDIO/blob/master/SUPPORT/README.md')
+        webbrowser.open('https://github.com/xmoner/BILEK-STUDIO/tree/master/SUPPORT#readme')
         return {'FINISHED'}
 
 class TOPBAR_MT_Shape_keys_plus_sub_menu(bpy.types.Menu):
