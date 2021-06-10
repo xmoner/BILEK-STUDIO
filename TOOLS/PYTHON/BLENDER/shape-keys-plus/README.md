@@ -1,9 +1,15 @@
-### **Welcome to the documentation about Shape Keys Plus**
+# BILEK Studio is introducing Shape Keys Plus Tool for Blender
+
+![](images/BILEK_STUDIO_logo_type_colored.png)
+
+
+# Shape Keys Plus (![](icons/shape_keys_plus_logo.png) )
+
 ...for duplicating and mirroring shape keys (in Maya software called Blendshapes ("BS") )
 
-### About:
+## About:
 
-Author: Lukas Bilek. BILEK STUDIO.
+Author: Lukas Bilek. BILEK Studio.
 
 Date created: 6 Jun 2021
 
@@ -14,19 +20,32 @@ Contact: https://www.linkedin.com/in/lukasbilek/
 How to support me: On Blender market: www.blendermarket.com or contact me on linked it and say something nice. :-)
     
 This tools is suppose to make easier life for artist who is working with shape keys (BS).
-You should find the buttons under Shape Keys Special in Shape Keys attributes.
+You should find the buttons under Shape Key Specials in Shape Keys attributes.
 
-### List of buttons:
+## List of buttons: 
 
-"Duplicate & mirror from L_ > R_"
+###(Top Bar) BILEK Tools > (![](icons/shape_keys_plus_logo.png)) Shape Keys Plus >  :
 
-"Duplicate & mirror from R_ > L_"
+![](icons/L_R_side.png) "Duplicate & mirror from L_ > R_"
 
-"Duplicate & mirror all L_ >> R_"
+![](icons/R_L_side.png) "Duplicate & mirror from R_ > L_"
 
-"Duplicate & mirror all R_ >> L_"
+![](icons/L_R_side_all.png) "Duplicate & mirror all L_ >> R_"
 
-"Shape Keys Plus HELP'
+![](icons/R_L_side_all.png) "Duplicate & mirror all R_ >> L_"
+
+![](icons/help.png) "Shape Keys Plus HELP'
+
+## Screenshots from Blender 2.93 LTS:
+
+### From Top Bar:
+
+![](images/screenshot_bilek_tools_shape_keys_plus.png)
+
+### From Object Data Properties (A) > Shape Keys > Shape Key Specials >...  
+
+![](images/screenshot_shape_keys_specials_menu.png)
+
 
 ### What it is doing:
 - Before clicking on any buttons, you have to select one or more objects in the scene to get it work.
@@ -41,12 +60,12 @@ You should find the buttons under Shape Keys Special in Shape Keys attributes.
     
 **_What information should the tool copy when clicked on the buttons:_**
 
-- ##**In version 0.2.0:**
+- #**In version 0.2.0:**
     - Duplicating shape keys.
     - Mirroring shape keys after duplicating.
     - Renaming Shape Keys such as [L_] [l_] [_L] [_l] (prefix and suffix) [R_] [r_] [_R] [_r]) 
     - Removing shape keys if needs to be removed for creating new shape keys.
-    - Expressions - it copies some expressions, but not recommended.
+    - Expressions - it copies some expressions, but not recommended. You will have to try it by yourself. (No guarantee)
     - Copying an attribute from Range Min in Shape Keys.
     - Copying an attribute from Range Max in Shape Keys.
     - Able to generate Shape keys with multiply / more objects.
