@@ -5,6 +5,10 @@
 
 # Shape Keys Plus (![](icons/shape_keys_plus_logo.png) )
 
+Click on the picture which takes you to YouTube video.
+
+[![IMAGE ALT TEXT HERE](https://i9.ytimg.com/vi/pBWk69fvn84/mq2.jpg?sqp=COSYlIYG&rs=AOn4CLAHz13MfAtl_Jz_kUvnQyTDWDLOQw)](https://youtu.be/pBWk69fvn84)
+
 ...for duplicating and mirroring shape keys (in Maya software called Blendshapes ("BS") )
 
 ## About:
