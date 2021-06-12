@@ -508,12 +508,12 @@ class TOPBAR_MT_Shape_keys_plus_sub_menu(bpy.types.Menu):
     bl_label = "Shape Keys Plus"
 
     def draw(self, context):
-        self.layout.operator(EasyShapeKeysPlusLeftSide.bl_idname,text="Duplicate & mirror from L_ > R_", icon_value = pcoll["L_R_SIDE"].icon_id)
-        self.layout.operator(EasyShapeKeysPlusRightSide.bl_idname,text="Duplicate & mirror from R_ > L_", icon_value = pcoll["R_L_SIDE"].icon_id)
+        self.layout.operator(EasyShapeKeysPlusLeftSide.bl_idname, text="Duplicate & mirror from L_ > R_", icon_value = pcoll["L_R_SIDE"].icon_id)
+        self.layout.operator(EasyShapeKeysPlusRightSide.bl_idname, text="Duplicate & mirror from R_ > L_", icon_value = pcoll["R_L_SIDE"].icon_id)
         #print ('pcoll', pcoll, pcoll['ICON_SMALL'])
-        self.layout.operator(MultiplyShapeKeysPlusLeftSide.bl_idname,text="Duplicate & mirror all L_ >> R_",icon_value = pcoll["L_R_SIDE_ALL"].icon_id)
-        self.layout.operator(MultiplyShapeKeysPlusRightSide.bl_idname,text="Duplicate & mirror all R_ >> L_",icon_value = pcoll["R_L_SIDE_ALL"].icon_id)
-        self.layout.operator(ShapeKeysPlusHelp.bl_idname,text="Shape Keys Plus HELP",icon_value = pcoll["HELP"].icon_id)
+        self.layout.operator(MultiplyShapeKeysPlusLeftSide.bl_idname, text="Duplicate & mirror all L_ >> R_",icon_value = pcoll["L_R_SIDE_ALL"].icon_id)
+        self.layout.operator(MultiplyShapeKeysPlusRightSide.bl_idname, text="Duplicate & mirror all R_ >> L_",icon_value = pcoll["R_L_SIDE_ALL"].icon_id)
+        self.layout.operator(ShapeKeysPlusHelp.bl_idname, text="Shape Keys Plus HELP",icon_value = pcoll["HELP"].icon_id)
         
 
 class TOPBAR_MT_BILEK_Tools_menu(bpy.types.Menu):

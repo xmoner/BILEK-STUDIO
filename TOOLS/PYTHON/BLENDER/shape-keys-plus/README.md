@@ -69,3 +69,20 @@ You should find the buttons under Shape Key Specials in Shape Keys attributes.
     - Copying an attribute from Range Min in Shape Keys.
     - Copying an attribute from Range Max in Shape Keys.
     - Able to generate Shape keys with multiply / more objects.
+    -  ### - Currently it does not support rig, so if there are any connection with original shape keys, it might loose the connection.
+
+- ## How to install the add-on?
+    - Run Blender 3D (2.93 LTS)
+    - Go to Edit > Preferences > Add-on
+    - Then click on the button called "Install"
+    - Select the zip file called "shape-keys-plus.zip"
+    - Click on "Install Add-on"
+    - Once it is added to the add-ons, then tick the box on the Add-on.
+    - Then you should see BILEK Tools on Top Bar in Blender and button .
+You can see an animated gif as an example:  
+![](images/gifs/preferences_add-on.gif)
+      
+- You can see the buttons on the other place as well such as Shape Key Specials
+
+![](images/gifs/shape-key-specials.gif)
+
