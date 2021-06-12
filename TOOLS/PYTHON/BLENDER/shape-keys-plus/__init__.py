@@ -23,7 +23,7 @@ bl_info = {
     "name": "Shape Keys Plus",
     "description": "This tool is for duplicating and miroring shape keys with L-R prefixes and suffixes",
     "author": "© Lukas Bilek 2021. BILEK STUDIO. All rights reserved.",
-    "version": (0, 2, 0),
+    "version": (0, 2, 1),
     "blender": (2, 92, 0),
     # "location": "Shape Keys > Shape Keys Specials > Easy Blendshapes",
     # "warning": "", # used for warning icon and text in addons panel
