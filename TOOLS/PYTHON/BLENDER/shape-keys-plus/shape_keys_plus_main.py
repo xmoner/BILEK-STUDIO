@@ -29,6 +29,17 @@ try:
 except:
     print ('Something went wrong with loading images for images')
 
+dict_sides= {
+    'L_':'R_',
+    'l_':'r_',
+    'R_':'L_',
+    'r_':'l_',
+    '_L':'_R',
+    '_l':'_r',
+    '_R':'_L',
+    '_r':'_l'
+}
+
 class WindowInfo(bpy.types.Operator):
     '''
     This is a window for warning. If selected Keys Shapes does not have preffix or suffix, 
@@ -145,11 +156,9 @@ class GenerateShapesKeys(object):
                     else:
                         try:
                             # Here we have to find the right side of the shape key and remove it if exists
-                            if self.side=='l':
-                                index = one_object.data.shape_keys.key_blocks.find(blendshape_name.replace('_L','_R'))
-                            else:
-                                index = one_object.data.shape_keys.key_blocks.find(blendshape_name.replace('_R','_L'))
-                            #print (blendshape_name,':', index) 
+
+                            index = one_object.data.shape_keys.key_blocks.find(blendshape_name.replace(search_side.group(), dict_sides[search_side.group()]))
+                            #print (blendshape_name,':', index)
 
                             bpy.context.scene.objects[one_object.name].active_shape_key_index = index
             

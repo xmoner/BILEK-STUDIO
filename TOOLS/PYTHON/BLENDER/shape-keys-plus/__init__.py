@@ -6,7 +6,7 @@ bl_info = {
     "author": "© Lukas Bilek 2021. BILEK STUDIO. All rights reserved.",
     "version": (0, 2, 0),
     "blender": (2, 92, 0),
-    # "location": "Shape Kyes > Shape Keys Specials > Easy Blendshapes",
+    #"location": "Shape Keys > Shape Keys Specials > Easy Blendshapes",
     #"warning": "", # used for warning icon and text in addons panel
     #"support": "COMMUNITY",
     "category": "Object",
