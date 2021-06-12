@@ -1,4 +1,4 @@
-'''
+"""
 Shape Keys Plus add-on for Duplicating and Mirroring Shape Keys.
 Copyright (C) 2021  Lukas Bilek. BILEK STUDIO.
 
@@ -14,9 +14,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
-'''
+"""
 
 from . import shape_keys_plus_main
+
 # Info about the add-on
 bl_info = {
     "name": "Shape Keys Plus",
@@ -24,22 +25,22 @@ bl_info = {
     "author": "© Lukas Bilek 2021. BILEK STUDIO. All rights reserved.",
     "version": (0, 2, 0),
     "blender": (2, 92, 0),
-    #"location": "Shape Keys > Shape Keys Specials > Easy Blendshapes",
-    #"warning": "", # used for warning icon and text in addons panel
-    #"support": "COMMUNITY",
+    # "location": "Shape Keys > Shape Keys Specials > Easy Blendshapes",
+    # "warning": "", # used for warning icon and text in addons panel
+    # "support": "COMMUNITY",
     "category": "Object",
 }
 import bpy
-from . shape_keys_plus_main import (WindowInfo,
-           EasyShapeKeysPlusLeftSide,
-           EasyShapeKeysPlusRightSide,
-           MultiplyShapeKeysPlusLeftSide,
-           MultiplyShapeKeysPlusRightSide,
-           ShapeKeysPlusHelp,
-           TOPBAR_MT_BILEK_Tools_menu,
-           TOPBAR_MT_Shape_keys_plus_sub_menu,
-           BilekStudioAbout,
-           SupportBilekStudio)
+from .shape_keys_plus_main import (WindowInfo,
+                                   EasyShapeKeysPlusLeftSide,
+                                   EasyShapeKeysPlusRightSide,
+                                   MultiplyShapeKeysPlusLeftSide,
+                                   MultiplyShapeKeysPlusRightSide,
+                                   ShapeKeysPlusHelp,
+                                   TOPBAR_MT_BILEK_Tools_menu,
+                                   TOPBAR_MT_Shape_keys_plus_sub_menu,
+                                   BilekStudioAbout,
+                                   SupportBilekStudio)
 
 # List of classes for registering and unregistering
 classes = (WindowInfo,
