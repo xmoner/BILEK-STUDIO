@@ -1,0 +1,8 @@
+{
+    "Camera": false,
+    "Collection": true,
+    "Cube": true,
+    "Light": false,
+    "python_commands": "print (\"aaa\");print ('bbb');import bpy;bpy.ops.mesh.primitive_cube_add()",
+    "run_python_commands": true
+}

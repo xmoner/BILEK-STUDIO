@@ -16,22 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-#from . import clean_start_main
-# path = '/Users/lukas/Documents/BILEK-STUDIO/CODE/TOOLS/PYTHON/BLENDER/clean-start'
-# import sys
-# from importlib import reload
-#
-# if path not in sys.path:
-#     sys.path.append(path)
-# import clean_start_main
-# #clean_start_main.unregister()
-# #bpy.ops.script.reload()
-# reload(clean_start_main)
-#if __name__ == "__main__":
-#    clean_start_main.register()
-
 # Info about the add-on
-import logging
 
 bl_info = {
     "name": "Clean Start",
@@ -45,31 +30,25 @@ bl_info = {
     "category": "Object",
 }
 import bpy
-# from .clean_start_main import (WindowCleanStart,
-#                                    CleanStartScene,
-#                                    )
-#path = '/Users/lukas/Documents/BILEK-STUDIO/CODE/TOOLS/PYTHON/BLENDER/clean-start'
-import sys
 import pathlib
-import json
 import re
 import addon_utils
-import os
+
 parent = pathlib.Path(__file__).resolve().parents[0]
 dir = parent.joinpath('data')
 config_file = dir.joinpath('config.json')
+
 from importlib import reload
+from bpy.app.handlers import persistent
 
 from .clean_start_main import (WindowCleanStart,
-                              TOPBAR_MT_BILEK_Tools_menu,
-                              MY_MT_Clean_start_sub_menu,
-                                CleanStartHelp,
-                                LaunchCleanStartWindow,
-                              clean_scene,
-                            add_tool_submenu
-                              )
-
-
+                               TOPBAR_MT_BILEK_Tools_menu,
+                               MY_MT_Clean_start_sub_menu,
+                               CleanStartHelp,
+                               LaunchCleanStartWindow,
+                               clean_scene,
+                               add_tool_submenu
+                               )
 
 # List of classes for registering and unregistering
 classes = [WindowCleanStart,
@@ -109,6 +88,7 @@ def check_bilek_tools():
     print(other_bilek_tool_enabled, 'other_bilek_tool_enabled')
     return other_bilek_tool_enabled
 
+
 try:
     if check_bilek_tools():
         classes.remove(TOPBAR_MT_BILEK_Tools_menu)
@@ -119,26 +99,23 @@ try:
     else:
         bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
 
-    #bpy.types.MESH_MT_shape_key_context_menu.remove(shape_keys_plus_main.menu_func_buttons)
+    # bpy.types.MESH_MT_shape_key_context_menu.remove(shape_keys_plus_main.menu_func_buttons)
 
     # Unregister top bar Menu
-    #bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
-    #bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Test_menu.menu_draw)
+    # bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
+    # bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Test_menu.menu_draw)
 
 except:
     print('Nothing to unregister')
 
 
-
 # This part is for blender registering the add-on and unregistering them as well.
 def register():
-
-
     # Register menu under arrow in the Shape Keys
-    #bpy.types.MESH_MT_shape_key_context_menu.append(shape_keys_plus_main.menu_func_buttons)
+    # bpy.types.MESH_MT_shape_key_context_menu.append(shape_keys_plus_main.menu_func_buttons)
 
     # Register top bar Menu
-    #bpy.types.TOPBAR_MT_editor_menus.append(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
+    # bpy.types.TOPBAR_MT_editor_menus.append(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
 
     try:
         if check_bilek_tools():
@@ -172,9 +149,13 @@ def unregister():
             classes.remove(TOPBAR_MT_BILEK_Tools_menu)
 
         for cls in classes:
-            print (cls, 'cls')
+            print(cls, 'cls')
             bpy.utils.unregister_class(cls)
-        bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu[add_tool_submenu])
+            try:
+                bpy.types.TOPBAR_MT_editor_menus.remove(cls)
+            except Exception as e:
+                print('Could not remove...:', e)
+        # bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu[add_tool_submenu])
     else:
         for cls in classes:
             bpy.utils.unregister_class(cls)
@@ -182,11 +163,12 @@ def unregister():
         # Unregister top bar Menu
         bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
 
-    #bpy.types.MESH_MT_shape_key_context_menu.remove(shape_keys_plus_main.menu_func_buttons)
+    # bpy.types.MESH_MT_shape_key_context_menu.remove(shape_keys_plus_main.menu_func_buttons)
 
     # Unregister top bar Menu
-    #bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
+    # bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
     bpy.utils.unregister_class(SimpleOperator)
+
 
 class SimpleOperator(bpy.types.Operator):
     """Tooltip"""
@@ -198,7 +180,7 @@ class SimpleOperator(bpy.types.Operator):
         return context.active_object is not None
 
     def execute(self, context):
-        print ('running cleaning')
+        print('running cleaning')
         main(context)
         clean_scene()
         return {'FINISHED'}
@@ -208,18 +190,16 @@ def main(context):
     for ob in context.scene.objects:
         print(ob)
 
-from bpy.app.handlers import persistent
 
 @persistent
 def load_fonts(scene):
-    #bpy.app.handlers.load_post.remove(load_fonts)
-    print ('load fonts')
+    # bpy.app.handlers.load_post.remove(load_fonts)
+    print('load fonts')
     clean_scene()
+
 
 if __name__ == "__main__":
     register()
-    print ('runs cleaning scene')
+    print('runs cleaning scene')
     # test call
     bpy.ops.object.simple_operator()
-
-
