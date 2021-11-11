@@ -534,6 +534,7 @@ class SupportBilekStudio(bpy.types.Operator):
 
 class TOPBAR_MT_Shape_keys_plus_sub_menu(bpy.types.Menu):
     bl_label = "Shape Keys Plus"
+    bl_idname = "TOPBAR_MT_Shape_keys_plus_sub_menu"
 
     def draw(self, context):
         self.layout.operator(EasyShapeKeysPlusLeftSide.bl_idname, text="Duplicate & mirror from L_ > R_",
@@ -549,7 +550,11 @@ class TOPBAR_MT_Shape_keys_plus_sub_menu(bpy.types.Menu):
 
 
 class TOPBAR_MT_BILEK_Tools_menu(bpy.types.Menu):
+    """
+    Create a menu at TopBar in Blender with other buttons.
+    """
     bl_label = "BILEK Tools"
+    bl_idname= 'TOPBAR_MT_BILEK_Tools_menu'
 
     def draw(self, context):
         self.layout.menu("TOPBAR_MT_Shape_keys_plus_sub_menu", icon_value=pcoll["SHAPE_KEYS_PLUS_LOGO"].icon_id)
@@ -560,12 +565,19 @@ class TOPBAR_MT_BILEK_Tools_menu(bpy.types.Menu):
 
     def menu_draw(self, context):
         self.layout.menu("TOPBAR_MT_BILEK_Tools_menu")
+        print('TopBar Bilek Menu added from Shape Keys Plus Tool')
 
 
-# Create buttons in the Shape keys Attributes
 def menu_func_buttons(self, context):
-    self.layout.operator(ShapeKeysPlusHelp.bl_idname, text="Shape Keys Plus HELP", icon_value=pcoll["HELP"].icon_id)
+    """
+    Create buttons in the Shape keys Attributes
+    Args:
+        self:
+        context:
 
+    Returns:
+
+    """
     self.layout.operator(MultiplyShapeKeysPlusRightSide.bl_idname, text="Duplicate & mirror all R_ >> L_",
                          icon_value=pcoll["R_L_SIDE_ALL"].icon_id)
     self.layout.operator(MultiplyShapeKeysPlusLeftSide.bl_idname, text="Duplicate & mirror all L_ >> R_",
@@ -575,7 +587,21 @@ def menu_func_buttons(self, context):
     self.layout.operator(EasyShapeKeysPlusLeftSide.bl_idname, text="Duplicate & mirror from L_ > R_",
                          icon_value=pcoll["L_R_SIDE"].icon_id)
 
+    self.layout.operator(ShapeKeysPlusHelp.bl_idname, text="Shape Keys Plus HELP", icon_value=pcoll["HELP"].icon_id)
+
     # print ('pcoll', pcoll, pcoll['ICON_SMALL'])
 
 # def menu_func_for_R(self, context):
 #     self.layout.operator(EasyBlendshapes.bl_idname,text="Duplicate & mirror from R_ >> L_")
+
+def add_tool_submenu(self, context):
+    """
+    Launching menu in TobBar Menu
+    Args:
+        self:
+        context:
+
+    Returns:
+
+    """
+    self.layout.menu(TOPBAR_MT_Shape_keys_plus_sub_menu.bl_idname, icon_value=pcoll["SHAPE_KEYS_PLUS_LOGO"].icon_id)
