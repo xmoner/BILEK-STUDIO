@@ -1,5 +1,5 @@
 """
-Clean Start add-on for removing default objects in Blender 3d Scene.
+Clean Start add-on for removing default objects and running commands in Blender 3d Scene when launching.
 Copyright (C) 2021  Lukas Bilek. BILEK STUDIO.
 
 This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import bpy
 import pathlib
 import json
-import logging
 import os
 import webbrowser
 import bpy.utils.previews
@@ -30,27 +29,42 @@ dir_icons = parent.joinpath('icons')
 
 pcoll = bpy.utils.previews.new()
 
-# Load Icon Images
+
+# function for loading icon images for a specific path
 def load_images():
+    """
+    Read and load icon files
+    Returns:
+
+    """
     for entry in os.scandir(dir_icons):
         if entry.name.endswith(".png"):
             name = os.path.splitext(entry.name)[0]
             pcoll.load(name.upper(), entry.path, "IMAGE")
-            print('name.upper', name.upper())
-            print('entry.path', entry.path)
+            # print('name.upper', name.upper())
+            # print('entry.path', entry.path)
 
-
+# Try to load images
 try:
     load_images()
-except:
-    print('Something went wrong with loading images for images')
+except Exception as e:
+    print('Something went wrong with loading images for images', e)
 
-# Load Json file (config)
+# Load Json file (config) where are saved necessary data
 dir_data = parent.joinpath('data')
 config_file = dir_data.joinpath('config.json')
 
 
 def objects_off(self, context):
+    """
+    Change objects off if they are on.
+    Args:
+        self:
+        context:
+
+    Returns:
+
+    """
     if not self.collection_bool:
         self.cube_bool = self.cube_bool_off
         self.camera_bool = self.camera_bool_off
@@ -58,15 +72,22 @@ def objects_off(self, context):
 
 
 class WindowCleanStart(bpy.types.Operator):
+    """
+    This class runs the tool. It creates the main managing tool window.
+    Here you will be able to decide what you want to remove while Blender launch.
+    ... or adding your own script to the blender and run when Blender is launched.
+    """
     bl_idname = "object.set_clean_start_config"
     bl_label = "Set Clean Start Config"
 
+    # Load data from config file
     with open(config_file, 'r') as myfile:
         data = myfile.read()
 
     # parse file
     config_data = json.loads(data)
-    print(config_data, 'config_data')
+
+    # Get data and prepare buttons
     for key, value in config_data.items():
         if key == 'Cube':
             cube_bool: bpy.props.BoolProperty(default=value, name="Keep Cube")
@@ -87,6 +108,14 @@ class WindowCleanStart(bpy.types.Operator):
             run_python_commands_bool: bpy.props.BoolProperty(default=value, name="Run Your Python Commands")
 
     def execute(self, context):
+        """
+        When execute, then save data to the config file.
+        Args:
+            context:
+
+        Returns: {finished}
+
+        """
         save_dict = {"Cube": self.cube_bool,
                      "Camera": self.camera_bool,
                      "Light": self.light_bool,
@@ -94,11 +123,10 @@ class WindowCleanStart(bpy.types.Operator):
                      "python_commands": str(self.commands_string),
                      "run_python_commands": self.run_python_commands_bool
                      }
-        print(self.commands_string, 'commands_string')
         with open(config_file, 'w') as outfile:
             json.dump(save_dict, outfile, indent=4, sort_keys=True)
-        print('{} saved'.format(save_dict))
-        logging.info('{} saved'.format(save_dict))
+
+        print('{} ...has been saved.'.format(save_dict))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -106,6 +134,14 @@ class WindowCleanStart(bpy.types.Operator):
         return wm.invoke_props_dialog(self)
 
     def draw(self, context):
+        """
+        create window with buttons and so on.
+        Args:
+            context: 
+
+        Returns:
+
+        """
         layout = self.layout
         self.col = layout.column()
         self.col.label(text="Custom Interface!")
@@ -121,81 +157,44 @@ class WindowCleanStart(bpy.types.Operator):
         col1.prop(self, 'collection_bool')
         col1.prop(self, 'commands_string')
         col1.prop(self, 'run_python_commands_bool')
-
-
-class CleanStartScene(object):
-    """
-    in this class is generating shape keys. More info what it is doing is written in the begining of the script.
-    """
-
-    def __init__(self, delete_objects=None):
-        # clean scene based on given tasks
-        # read file
-        with open(config_file, 'r') as myfile:
-            data = myfile.read()
-
-        # parse file
-        config_data = json.loads(data)
-        print(config_data)
-
-        results = bpy.ops.object.set_clean_start_config('INVOKE_DEFAULT')
-        print(results, 'results')
-        for key, value in config_data.items():
-            # print (key,value)
-            if value == 'delete':
-                get_object = bpy.context.scene.objects.get(key)
-                print(get_object)
-                if get_object:
-                    logging.info("{} found in scene".format(key))
-                    obj = bpy.context.scene.objects[key]
-                    bpy.ops.object.delete({"selected_objects": [obj]})
-                    logging.info('Object {} has been removed'.format(key))
-                else:
-                    logging.info('{} not found in scene'.format(key))
-
-
-class TOPBAR_MT_BILEK_Test_menu(bpy.types.Menu):
-    bl_label = "BILEK TEST"
-
-    def draw(self, context):
-        CleanStartScene()
-
-    def menu_draw(self, context):
-        self.layout.menu("TOPBAR_MT_BILEK_Test_menu")
-
+        
 
 def clean_scene():
+    """
+    This function is reading the data from the config and applying to the Blender while it's launching.
+    Returns:
+
+    """
     with open(config_file, 'r') as myfile:
         data = myfile.read()
-    print('start process removing')
+    print('Start process removing')
+    
     # parse file
     config_data = json.loads(data)
     for key, value in config_data.items():
         if not value and key != 'python_commands' and key != 'Collection':
             # object = bpy.context.scene.objects.get(key)
-            # if object:
             try:
                 print(key, value, 'removing')
                 object_to_delete = bpy.data.objects[key]
                 bpy.data.objects.remove(object_to_delete, do_unlink=True)
-            except Exception as e:
-                print('could not remove object: {}'.format(key))
+            except Exception as err:
+                print('could not remove object: {}; {}'.format(key, err))
         elif not value and key == 'Collection':
             collection = bpy.data.collections.get('Collection')
             if collection:
                 bpy.data.collections.remove(collection)
 
         elif key == 'python_commands':
-            print(key, 'key', config_data, 'config_data')
+            # print(key, 'key', config_data, 'config_data')
             if config_data['run_python_commands']:
-                print('python runs')
                 try:
                     exec(value)
-                except Exception as e:
-                    ShowMessageBox("Please, check out your script at Clean Start Tool:{} ".format(e), "ERROR!", 'ERROR')
+                except Exception as err:
+                    show_message_box("Please, check out your script at Clean Start Tool:{} ".format(err), "ERROR!", 'ERROR')
 
 
-def ShowMessageBox(message="", title="Message Box", icon='INFO'):
+def show_message_box(message="", title="Message Box", icon='INFO'):
     """
     This function is poping up a window with a text
 
@@ -212,19 +211,10 @@ def ShowMessageBox(message="", title="Message Box", icon='INFO'):
     bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
 
 
-# Class where it is running the class for duplicating and mirroring Left shape keys
-class LaunchCleanStartWindow(bpy.types.Operator):
-    bl_idname = "object.launch_clean_start_window"
-    bl_label = "Launch Clean Start Tool"
-    bl_description = "It will launch a tool called Clean Start"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        CleanStartScene()
-        return {'FINISHED'}
-
-
 class CleanStartHelp(bpy.types.Operator):
+    """
+    Opening a window to the specific help website
+    """
     bl_idname = "object.clean_start_help"
     bl_label = "Clean Start Help"
     bl_description = "Clean Start Help will take to you to the website."
@@ -258,21 +248,14 @@ class SupportBilekStudio(bpy.types.Operator):
     def execute(self, context):
         webbrowser.open('https://github.com/xmoner/BILEK-STUDIO/tree/master/SUPPORT#readme')
         return {'FINISHED'}
-
-
-class MY_MT_Clean_start_sub_menu(bpy.types.Menu):
-    bl_label = "Clean Start"
-    bl_idname = "OBJECT_MT_clean_start_sub_menu"
-
-    def draw(self, context):
-        self.layout.operator(LaunchCleanStartWindow.bl_idname, text="Launch Clean Start Tool",
-                             icon_value=pcoll["CLEAN_START_LOGO"].icon_id)
-        self.layout.operator(CleanStartHelp.bl_idname, text="Clean Start HELP",
-                             icon_value=pcoll["HELP"].icon_id)
-
+    
 
 class TOPBAR_MT_BILEK_Tools_menu(bpy.types.Menu):
+    """
+    Create a menu at TopBar in Blender with other buttons.
+    """
     bl_label = "BILEK Tools"
+    bl_idname= 'TOPBAR_MT_BILEK_Tools_menu'
 
     def draw(self, context):
         self.layout.operator(BilekStudioAbout.bl_idname, text="About BILEK STUDIO & Tools",
@@ -284,16 +267,73 @@ class TOPBAR_MT_BILEK_Tools_menu(bpy.types.Menu):
         self.layout.menu("TOPBAR_MT_BILEK_Tools_menu")
 
 
-def add_tool_submenu(self, context):
-    self.layout.menu(MY_MT_Clean_start_sub_menu.bl_idname, icon_value=pcoll["CLEAN_START_LOGO"].icon_id)
+class CleanStartScene(object):
+    """
+    This class in reading data from the config and then launching Clean Start Tool
+    """
 
-#
-# def register():
-#     bpy.utils.register_class(MY_MT_Clean_start_sub_menu)
-#     bpy.utils.register_class(MY_MT_CustomSubMenu)
-#     bpy.types.TOPBAR_MT_BILEK_Tools_menu.append(add_tool_submenu)
-#
-# def unregister():
-#     bpy.types.TOPBAR_MT_BILEK_Tools_menu.remove(add_tool_submenu)
-#     bpy.utils.unregister_class(MY_MT_CustomSubMenu)
-#     bpy.utils.unregister_class(MY_MT_Clean_start_sub_menu)
+    def __init__(self, delete_objects=None):
+        # clean scene based on given tasks
+        # read file
+        with open(config_file, 'r') as myfile:
+            data = myfile.read()
+
+        # parse file
+        config_data = json.loads(data)
+        # print(config_data)
+
+        results = bpy.ops.object.set_clean_start_config('INVOKE_DEFAULT')
+        # print(results, 'results')
+        for key, value in config_data.items():
+            # print (key,value)
+            if value == 'delete':
+                get_object = bpy.context.scene.objects.get(key)
+                # print(get_object)
+                if get_object:
+                    print("{} found in scene".format(key))
+                    obj = bpy.context.scene.objects[key]
+                    bpy.ops.object.delete({"selected_objects": [obj]})
+                    print('Object {} has been removed'.format(key))
+                else:
+                    print('{} not found in scene'.format(key))
+
+
+class LaunchCleanStartWindow(bpy.types.Operator):
+    """
+    Class for launching the Window Clean Start Tool
+    """
+    bl_idname = "object.launch_clean_start_window"
+    bl_label = "Launch Clean Start Tool"
+    bl_description = "It will launch a tool called Clean Start"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        CleanStartScene()
+        return {'FINISHED'}
+
+
+class MY_MT_Clean_start_sub_menu(bpy.types.Menu):
+    """
+    Class for creating a sub menu with buttons for launching Clean Start Tool
+    """
+    bl_label = "Clean Start"
+    bl_idname = "OBJECT_MT_clean_start_sub_menu"
+
+    def draw(self, context):
+        self.layout.operator(LaunchCleanStartWindow.bl_idname, text="Launch Clean Start Tool",
+                             icon_value=pcoll["CLEAN_START_LOGO"].icon_id)
+        self.layout.operator(CleanStartHelp.bl_idname, text="Clean Start HELP",
+                             icon_value=pcoll["HELP"].icon_id)
+
+
+def add_tool_submenu(self, context):
+    """
+    Launching menu in TobBar Menu
+    Args:
+        self:
+        context:
+
+    Returns:
+
+    """
+    self.layout.menu(MY_MT_Clean_start_sub_menu.bl_idname, icon_value=pcoll["CLEAN_START_LOGO"].icon_id)
