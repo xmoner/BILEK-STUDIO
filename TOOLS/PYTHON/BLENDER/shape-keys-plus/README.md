@@ -7,7 +7,7 @@
 
 Click on the picture which takes you to YouTube video.
 
-[![IMAGE ALT TEXT HERE](https://i9.ytimg.com/vi/pBWk69fvn84/mq2.jpg?sqp=COSYlIYG&rs=AOn4CLAHz13MfAtl_Jz_kUvnQyTDWDLOQw)](https://youtu.be/pBWk69fvn84)
+[![](images/main-introducing-picture.png)](https://youtu.be/pBWk69fvn84)
 
 ...for duplicating and mirroring shape keys (in Maya software called Blendshapes ("BS") )
 
@@ -63,6 +63,12 @@ You should find the buttons under Shape Key Specials in Shape Keys attributes.
     - "Duplicate & mirror all R_ >> L_" is same as "Duplicate & mirror all L_ >> R_" just from Right to Left sides.
     
 **_What information should the tool copy when clicked on the buttons:_**
+
+- #**In version 0.2.2:**
+    - Changed and updated how menu is loaded. it is also connecting other add-on to the Bilek Tools Menu.
+    - However, Currently there is some issue with it (register/unregister addons with submenus) at the moment.
+      This issue is fixed by restart Blender.
+
 
 - #**In version 0.2.0:**
     - Duplicating shape keys.
