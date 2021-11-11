@@ -265,7 +265,7 @@ class TOPBAR_MT_BILEK_Tools_menu(bpy.types.Menu):
 
     def menu_draw(self, context):
         self.layout.menu("TOPBAR_MT_BILEK_Tools_menu")
-
+        print('TopBar Bilek Menu added from Clean Start Tool')
 
 class OBJECT_MT_clean_start_sub_menu(bpy.types.Menu):
     """

@@ -30,6 +30,8 @@ import bpy
 import pathlib
 import re
 import addon_utils
+import inspect
+import os
 
 parent = pathlib.Path(__file__).resolve().parents[0]
 dir = parent.joinpath('data')
@@ -115,26 +117,43 @@ def register():
     Returns:
 
     """
-    if check_bilek_tools():
-        print ('tools are on')
-        [classes.remove(i) for i in [TOPBAR_MT_BILEK_Tools_menu, BilekStudioAbout, SupportBilekStudio] if i in classes]
-        # Register classes
-        for cls in classes:
-            bpy.utils.register_class(cls)
-        bpy.types.TOPBAR_MT_BILEK_Tools_menu.prepend(add_tool_submenu)
-        print('adding tool')
-    else:
-        [classes.append(i) for i in [TOPBAR_MT_BILEK_Tools_menu, BilekStudioAbout, SupportBilekStudio] if i not in classes]
+    print('Adding Clean Start Tool')
 
-        # Register classes
+    try:
+        topbar_mt_bilek = str(os.path.basename(inspect.getfile(bpy.types.TOPBAR_MT_BILEK_Tools_menu)))
+    except:
+        topbar_mt_bilek = None
+
+    if topbar_mt_bilek != 'clean_start_main.py' and topbar_mt_bilek is not None:
+        [classes.remove(i) for i in [TOPBAR_MT_BILEK_Tools_menu, BilekStudioAbout, SupportBilekStudio] if i in classes]
         for cls in classes:
             bpy.utils.register_class(cls)
+            print ('registering class:',cls)
+
+    elif topbar_mt_bilek == 'clean_start_main.py':
+        [classes.remove(i) for i in [TOPBAR_MT_BILEK_Tools_menu, BilekStudioAbout, SupportBilekStudio] if i in classes]
+        for cls in classes:
+            bpy.utils.register_class(cls)
+            print ('registering class:',cls)
+
+    else:
+        [classes.append(i) for i in [TOPBAR_MT_BILEK_Tools_menu, BilekStudioAbout, SupportBilekStudio] if
+         i not in classes]
+        #
+        for cls in classes:
+            bpy.utils.register_class(cls)
+            print ('registering class:',cls)
+
+        try:
+            bpy.utils.register_class(TOPBAR_MT_BILEK_Tools_menu)
+        except:
+            pass
         print('Creating Bilek Menu and Sub Menus with Tools')
         bpy.types.TOPBAR_MT_editor_menus.append(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
-        print('Adding sub menu and Clean Start Tool')
-        bpy.types.TOPBAR_MT_BILEK_Tools_menu.prepend(add_tool_submenu)
-        print('Clean Start Tool has been added')
 
+    print('Adding sub menu and Clean Start Tool')
+    bpy.types.TOPBAR_MT_BILEK_Tools_menu.prepend(add_tool_submenu)
+    print('Clean Start Tool has been added')
     # run clean scene in blender while Blender is launching
     bpy.app.handlers.load_post.append(run_clean_scene)
 
