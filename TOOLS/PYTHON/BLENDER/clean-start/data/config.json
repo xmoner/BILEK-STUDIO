@@ -1,8 +1,8 @@
 {
-    "Camera": false,
+    "Camera": true,
     "Collection": true,
     "Cube": false,
-    "Light": false,
-    "python_commands": "print ('bbb');import bpy;bpy.ops.mesh.primitive_cylinder_add()",
-    "run_python_commands": true
+    "Light": true,
+    "python_commands": "print ('Creating Cylinder in Blender Scene...');import bpy;bpy.ops.mesh.primitive_cylinder_add()",
+    "run_python_commands": false
 }
