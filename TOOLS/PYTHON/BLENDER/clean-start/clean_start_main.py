@@ -144,7 +144,7 @@ class WindowCleanStart(bpy.types.Operator):
         """
         layout = self.layout
         self.col = layout.column()
-        self.col.label(text="Custom Interface!")
+        self.col.label(text="Options:")
 
         subsub = self.col.column()
         subsub.active = self.collection_bool
