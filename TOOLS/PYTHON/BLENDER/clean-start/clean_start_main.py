@@ -267,52 +267,7 @@ class TOPBAR_MT_BILEK_Tools_menu(bpy.types.Menu):
         self.layout.menu("TOPBAR_MT_BILEK_Tools_menu")
 
 
-class CleanStartScene(object):
-    """
-    This class in reading data from the config and then launching Clean Start Tool
-    """
-
-    def __init__(self, delete_objects=None):
-        # clean scene based on given tasks
-        # read file
-        with open(config_file, 'r') as myfile:
-            data = myfile.read()
-
-        # parse file
-        config_data = json.loads(data)
-        # print(config_data)
-
-        results = bpy.ops.object.set_clean_start_config('INVOKE_DEFAULT')
-        # print(results, 'results')
-        for key, value in config_data.items():
-            # print (key,value)
-            if value == 'delete':
-                get_object = bpy.context.scene.objects.get(key)
-                # print(get_object)
-                if get_object:
-                    print("{} found in scene".format(key))
-                    obj = bpy.context.scene.objects[key]
-                    bpy.ops.object.delete({"selected_objects": [obj]})
-                    print('Object {} has been removed'.format(key))
-                else:
-                    print('{} not found in scene'.format(key))
-
-
-class LaunchCleanStartWindow(bpy.types.Operator):
-    """
-    Class for launching the Window Clean Start Tool
-    """
-    bl_idname = "object.launch_clean_start_window"
-    bl_label = "Launch Clean Start Tool"
-    bl_description = "It will launch a tool called Clean Start"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        CleanStartScene()
-        return {'FINISHED'}
-
-
-class MY_MT_Clean_start_sub_menu(bpy.types.Menu):
+class OBJECT_MT_clean_start_sub_menu(bpy.types.Menu):
     """
     Class for creating a sub menu with buttons for launching Clean Start Tool
     """
@@ -320,7 +275,7 @@ class MY_MT_Clean_start_sub_menu(bpy.types.Menu):
     bl_idname = "OBJECT_MT_clean_start_sub_menu"
 
     def draw(self, context):
-        self.layout.operator(LaunchCleanStartWindow.bl_idname, text="Launch Clean Start Tool",
+        self.layout.operator(WindowCleanStart.bl_idname, text="Launch Clean Start Tool",
                              icon_value=pcoll["CLEAN_START_LOGO"].icon_id)
         self.layout.operator(CleanStartHelp.bl_idname, text="Clean Start HELP",
                              icon_value=pcoll["HELP"].icon_id)
@@ -336,4 +291,4 @@ def add_tool_submenu(self, context):
     Returns:
 
     """
-    self.layout.menu(MY_MT_Clean_start_sub_menu.bl_idname, icon_value=pcoll["CLEAN_START_LOGO"].icon_id)
+    self.layout.menu(OBJECT_MT_clean_start_sub_menu.bl_idname, icon_value=pcoll["CLEAN_START_LOGO"].icon_id)

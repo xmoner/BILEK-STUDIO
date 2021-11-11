@@ -40,22 +40,19 @@ from bpy.app.handlers import persistent
 
 from .clean_start_main import (WindowCleanStart,
                                TOPBAR_MT_BILEK_Tools_menu,
-                               MY_MT_Clean_start_sub_menu,
+                               OBJECT_MT_clean_start_sub_menu,
                                CleanStartHelp,
                                clean_scene,
                                add_tool_submenu,
-                               LaunchCleanStartWindow,
-
-                                BilekStudioAbout,
-                                SupportBilekStudio
+                               BilekStudioAbout,
+                               SupportBilekStudio
 )
 
 # List of classes for registering and unregistering
 classes = [WindowCleanStart,
            TOPBAR_MT_BILEK_Tools_menu,
-           MY_MT_Clean_start_sub_menu,
+           OBJECT_MT_clean_start_sub_menu,
            CleanStartHelp,
-           LaunchCleanStartWindow,
            BilekStudioAbout,
            SupportBilekStudio
            ]
@@ -113,7 +110,11 @@ except Exception as err:
 
 # This part is for blender registering the add-on and unregistering them as well.
 def register():
+    """
+    Register add-on
+    Returns:
 
+    """
     if check_bilek_tools():
         print ('tools are on')
         [classes.remove(i) for i in [TOPBAR_MT_BILEK_Tools_menu, BilekStudioAbout, SupportBilekStudio] if i in classes]
@@ -128,17 +129,21 @@ def register():
         # Register classes
         for cls in classes:
             bpy.utils.register_class(cls)
-        print('creating bilek tool')
+        print('Creating Bilek Menu and Sub Menus with Tools')
         bpy.types.TOPBAR_MT_editor_menus.append(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
-        print ('registered')
+        print('Adding sub menu and Clean Start Tool')
         bpy.types.TOPBAR_MT_BILEK_Tools_menu.prepend(add_tool_submenu)
-        print ('registered 2a')
-    bpy.utils.register_class(OperationCleanStart)
-    bpy.app.handlers.load_post.append(load_fonts)
+        print('Clean Start Tool has been added')
+
+    # run clean scene in blender while Blender is launching
+    bpy.app.handlers.load_post.append(run_clean_scene)
 
 
-# Unregister add-on.
 def unregister():
+    """
+    Unregister add-on
+
+    """
     # Unregister classes
     if check_bilek_tools():
         [classes.remove(i) for i in [TOPBAR_MT_BILEK_Tools_menu,BilekStudioAbout,SupportBilekStudio] if i in classes]
@@ -159,42 +164,22 @@ def unregister():
 
     # bpy.types.MESH_MT_shape_key_context_menu.remove(shape_keys_plus_main.menu_func_buttons)
 
-    # Unregister top bar Menu
-    # bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_BILEK_Tools_menu.menu_draw)
-    bpy.utils.unregister_class(OperationCleanStart)
-
-
-class OperationCleanStart(bpy.types.Operator):
-    """Class running functions from clean_scene(), deleting and running commands from config file"""
-    bl_idname = "object.operation_clean_start"
-    bl_label = "Operation Clean Start"
-
-    @classmethod
-    def poll(cls, context):
-        return context.active_object is not None
-
-    def execute(self, context):
-        print('running cleaning')
-        main(context)
-        # run functions for removing objects in Blender and/or run commands
-        clean_scene()
-        return {'FINISHED'}
-
-
-def main(context):
-    for ob in context.scene.objects:
-        print(ob)
 
 
 @persistent
-def load_fonts(scene):
-    # bpy.app.handlers.load_post.remove(load_fonts)
-    print('load fonts')
+def run_clean_scene(scene):
+    """
+    This function runs function during launching Blender and the first scene
+    Args:
+        scene:
+
+    Returns:
+
+    """
+    print('Running Cleaning scene...')
     clean_scene()
+    print('Finished cleaning scene')
 
 
 if __name__ == "__main__":
     register()
-    print('runs cleaning scene')
-    # test call
-    bpy.ops.object.operation_clean_start()
