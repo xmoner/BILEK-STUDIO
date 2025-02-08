@@ -1,0 +1,56 @@
+-- Create category table
+CREATE TABLE category (
+    id_category SERIAL PRIMARY KEY,
+    name_category TEXT NOT NULL
+);
+
+-- Insert initial data into category table
+INSERT INTO category (id_category, name_category)
+VALUES (1, 'drinks'), (2, 'food')
+ON CONFLICT (id_category) DO NOTHING;
+
+-- Create items table
+CREATE TABLE items (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    price REAL NOT NULL,
+    id_category INTEGER REFERENCES category(id_category)
+);
+
+
+-- Users table
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE
+);
+
+-- Transactions table
+CREATE TABLE transactions (
+    transaction_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id),
+    date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_amount REAL
+);
+
+-- Transaction items table
+CREATE TABLE transaction_items (
+    id SERIAL PRIMARY KEY,
+    transaction_id INTEGER REFERENCES transactions(transaction_id),
+    item_name TEXT,
+    quantity INTEGER,
+    price REAL
+);
+
+-- Deleted transactions history table
+CREATE TABLE deleted_transactions_history (
+    id SERIAL PRIMARY KEY,
+    transaction_id INTEGER NOT NULL,
+    transaction_date TEXT NOT NULL,
+    transaction_user_id INTEGER REFERENCES users(user_id),
+    transaction_amount REAL NOT NULL,
+    transaction_items TEXT,
+    deleted_by_user_id INTEGER REFERENCES users(user_id),
+   deleted_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '3 hours')
+);
