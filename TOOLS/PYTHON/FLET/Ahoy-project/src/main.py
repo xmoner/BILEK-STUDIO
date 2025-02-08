@@ -21,11 +21,10 @@ def request_android_permissions(page: ft.Page):
         pos_dir = '/storage/emulated/0/POS'
         os.makedirs(pos_dir, exist_ok=True)
 class User:
-    def __init__(self, user_id=None, username=None,is_admin=None, nickname=None):
+    def __init__(self, user_id=None, username=None,is_admin=None):
         self.user_id = user_id
         self.username = username
         self.is_admin=is_admin
-        self.nickname=nickname
 
 current_user = User()
 
@@ -195,7 +194,7 @@ def main(page: ft.Page):
                 ft.Column(
                     [
                         ft.Text("Welcome to Ahoy!", size=30, weight=ft.FontWeight.BOLD),
-                        ft.Text(f"Hello, {current_user.nickname}!", size=20),
+                        ft.Text(f"Hello, {current_user.username}!", size=20),
                         # ft.Text(f"Hello, {current_user.nickname}!", size=20),
                         # ft.Text(f"Hello, {current_user.is_admin}!", size=20),
                         # ft.Text("This is the home page", size=20),
@@ -210,7 +209,7 @@ def main(page: ft.Page):
 
 
 
-    def create_nickname_view():
+    def create_username_view():
         # A page for registration
 
         text = ft.Text("Add a nick name.\nGreen colour means it is valid.", color=ft.Colors.GREEN)
@@ -219,7 +218,7 @@ def main(page: ft.Page):
 
         def on_nick_name_change(e):
             print('e.control.value', e.control.value)
-            response=database.check_nick_name(e.control.value)
+            response=database.check_username(e.control.value)
             if response:
                 # Change text color to red if the password is invalid
                 e.control.color = ft.Colors.RED
@@ -232,30 +231,30 @@ def main(page: ft.Page):
                 e.control.border_color = ft.Colors.GREEN
                 e.control.update()
                 return e.control.value
-        nickname = ft.TextField(label="Nickname", width=300,
+        username = ft.TextField(label="Username", width=300,
                                  on_change=on_nick_name_change)
 
-        def try_register_nickname(e):
-            if nickname:
-                reg_nickname=database.register_nickname(nickname.value, current_user.user_id)
-                print('nickname.value:', nickname.value)
-                if reg_nickname:
-                    # Go back to the login page after choosing a nickname
+        def try_register_username(e):
+            if username:
+                reg_username=database.register_username(username.value, current_user.user_id)
+                print('username.value:', username.value)
+                if reg_username:
+                    # Go back to the login page after choosing a username
                     page.go("/login")
                     page.update()
 
         def go_to_home(e):
             page.go('/')
 
-        home_view = ft.View("/nickname",
+        home_view = ft.View("/username",
                             [
                                 ft.Column(
                                     [
-                                        ft.Text("Please fill Nickname: ", size=15, weight=ft.FontWeight.BOLD),
+                                        ft.Text("Please fill Username: ", size=15, weight=ft.FontWeight.BOLD),
                                         # username_field,
                                         text,
-                                        nickname,
-                                        ft.Row([ft.ElevatedButton("Save", on_click=try_register_nickname,
+                                        username,
+                                        ft.Row([ft.ElevatedButton("Save", on_click=try_register_username,
                                                           bgcolor=ft.Colors.GREEN),
                                                 # ft.ElevatedButton("Skip it", on_click=go_to_home,
                                                 #                    bgcolor=ft.Colors.RED)
@@ -295,14 +294,12 @@ def main(page: ft.Page):
                 print('current_user.username:', current_user.username)
                 current_user.is_admin = user[0]['is_admin']
                 print('current_user.is_admin:', current_user.is_admin)
-                current_user.nickname = user[0]['nickname']
-                print('current_user.nickname:', current_user.nickname)
 
-                if current_user.nickname != 'None':
+                if current_user.username != 'None':
                     page.go("/")
                     page.update()
                 else:
-                    page.go("/nickname")  # Navigate to the nickname page
+                    page.go("/username")  # Navigate to the username page
                     page.update()
             else:
                 error_text.value = "Invalid username or password"
@@ -367,8 +364,8 @@ def main(page: ft.Page):
         elif page.route == "/":
             page.views.append(create_home_view()) # page.views.append(create_home_view()) #
 
-        elif page.route == "/nickname":
-            page.views.append(create_nickname_view())
+        elif page.route == "/username":
+            page.views.append(create_username_view())
         # elif page.route == "/reports":
         #     page.views.append(create_home_view(current_user.is_admin))
         #     page.views.append(create_reports_view())

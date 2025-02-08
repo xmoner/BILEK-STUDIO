@@ -190,28 +190,28 @@ def verify_login(email, password, is_admin):
     # Return the first matching user if found, otherwise return None
     return response.data[0] if response.data else None
 
-def check_nick_name(nick_name):
+def check_username(username):
     # Query the users table for a user and nick_name table
-    # If the nickname is already taken, return True; otherwise, return False
+    # If the username is already taken, return True; otherwise, return False
 
-    print('nick_name',nick_name)
-    response = supabase.table('users').select('nickname').execute()
-    nicknames = [user['nickname'] for user in response.data]
-    if nick_name in nicknames:
+    print('nick_name',username)
+    response = supabase.table('users').select('username').execute()
+    usernames = [user['username'] for user in response.data]
+    if username in usernames:
         return True
     else:
         return False
 
-    # print('Nicknames:', nicknames)
+    # print('usernames:', usernames)
 
-def register_nickname(nickname, user_id):
-    # Register a nickname for a user
-    response = supabase.table('users').select('nickname').eq('nickname', nickname).execute()
+def register_username(username, user_id):
+    # Register a username for a user
+    response = supabase.table('users').select('username').eq('username', username).execute()
     if response.data:
-        print('Nickname already exists:', response.data)
+        print('username already exists:', response.data)
         return False
 
     else:
-        supabase.table('users').update({'nickname': nickname}).eq('user_id', user_id).execute()
-        print('Nickname registered successfully.')
+        supabase.table('users').update({'username': username}).eq('user_id', user_id).execute()
+        print('Username registered successfully.')
         return True
